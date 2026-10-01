@@ -1,6 +1,6 @@
 {
     'name': "Payment Provider: SHKeeper",
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Accounting/Payment Providers',
     'sequence': 350,
     'summary': "Accept crypto payments through a self-hosted SHKeeper gateway.",

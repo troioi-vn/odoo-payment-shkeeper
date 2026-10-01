@@ -41,6 +41,23 @@ class TestSHKeeper(SHKeeperCommon, PaymentHttpCommon):
         self.assertEqual(tx.shkeeper_amount_crypto, self.invoice_response['amount'])
         self.assertEqual(tx.provider_reference, '42')
 
+    def test_status_page_shows_payment_instructions(self):
+        tx = self._create_transaction('redirect')
+        self._render(tx)
+        self.env['payment.transaction']._process('shkeeper', {'reference': tx.reference})
+        html = str(self.env['ir.qweb']._render('payment.state_header', {'tx': tx}))
+        self.assertIn(self.invoice_response['wallet'], html)
+        self.assertIn('/report/barcode/?barcode_type=QR', html)
+
+    def test_partial_payment_asks_for_the_remaining_amount(self):
+        tx = self._create_transaction('redirect')
+        self._render(tx)
+        self.env['payment.transaction']._process(
+            'shkeeper', self._notification(status='PARTIAL', paid=False, balance_crypto='0.0001')
+        )
+        html = str(self.env['ir.qweb']._render('payment.state_header', {'tx': tx}))
+        self.assertIn('Send the remaining amount to the same address.', html)
+
     def test_callback_base_url_override(self):
         self.provider.shkeeper_callback_base_url = 'https://shop.example.com/'
         self.assertEqual(

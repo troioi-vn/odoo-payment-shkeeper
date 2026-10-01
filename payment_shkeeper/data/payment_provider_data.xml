@@ -8,6 +8,12 @@
         <field name="module_id" ref="base.module_payment_shkeeper"/>
         <field name="redirect_form_view_id" ref="redirect_form"/>
         <field name="allow_tokenization">False</field>
+        <field name="pending_msg" type="html">
+            <p><strong>Waiting for your payment.</strong> Send the exact amount below to the
+            address shown, on the network shown. This page updates by itself once the payment is
+            confirmed on the blockchain, usually within a few minutes. You will also get a
+            confirmation email.</p>
+        </field>
         <field name="payment_method_ids"
                eval="[Command.set([
                          ref('payment_shkeeper.payment_method_shkeeper_btc'),

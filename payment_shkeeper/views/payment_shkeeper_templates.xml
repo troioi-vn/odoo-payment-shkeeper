@@ -40,13 +40,10 @@
                         <p t-if="shkeeper_tx.shkeeper_balance_crypto" class="small mb-1">
                             Received so far:
                             <t t-out="shkeeper_tx.shkeeper_balance_crypto"/>
-                            <t t-out="shkeeper_tx.shkeeper_crypto"/>
+                            <t t-out="shkeeper_tx.shkeeper_crypto"/>.
+                            Send the remaining amount to the same address.
                         </p>
-                        <p class="small text-muted mb-0">
-                            This page updates once the payment is confirmed on the blockchain,
-                            which can take from a few minutes to an hour. You will also receive an
-                            email.
-                        </p>
+                        <p class="small text-muted mb-0">You will also receive an email.</p>
                     </div>
                 </div>
             </div>
