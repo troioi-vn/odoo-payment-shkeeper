@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_provider_form" model="ir.ui.view">
+        <field name="name">SHKeeper Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+                <group invisible="code != 'shkeeper'">
+                    <field name="shkeeper_api_url"
+                           required="code == 'shkeeper' and state != 'disabled'"
+                           placeholder="https://shkeeper.example.com"/>
+                    <field name="shkeeper_api_key"
+                           required="code == 'shkeeper' and state != 'disabled'"
+                           password="True"/>
+                    <field name="shkeeper_callback_base_url"
+                           placeholder="Defaults to web.base.url"/>
+                    <div colspan="2">
+                        <button string="Test Connection"
+                                type="object"
+                                name="action_shkeeper_test_connection"
+                                class="btn-secondary"
+                                icon="fa-plug"/>
+                    </div>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>

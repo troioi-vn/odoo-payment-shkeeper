@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_shkeeper" model="payment.provider">
+        <field name="name">Crypto (SHKeeper)</field>
+        <field name="code">shkeeper</field>
+        <field name="image_128" type="base64" file="payment_shkeeper/static/description/icon.png"/>
+        <field name="module_id" ref="base.module_payment_shkeeper"/>
+        <field name="redirect_form_view_id" ref="redirect_form"/>
+        <field name="allow_tokenization">False</field>
+        <field name="payment_method_ids"
+               eval="[Command.set([
+                         ref('payment_shkeeper.payment_method_shkeeper_btc'),
+                         ref('payment_shkeeper.payment_method_shkeeper_usdt_trc20'),
+                     ])]"
+        />
+    </record>
+
+</odoo>

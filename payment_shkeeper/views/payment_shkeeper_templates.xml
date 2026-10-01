@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="redirect_form">
+        <form t-att-action="api_url" method="post">
+            <input type="hidden" name="reference" t-att-value="reference"/>
+        </form>
+    </template>
+
+    <template id="shkeeper_state_header" inherit_id="payment.state_header">
+        <xpath expr="//div[@name='o_payment_status_alert']" position="after">
+            <t t-set="shkeeper_tx" t-value="tx.sudo()"/>
+            <div t-if="shkeeper_tx.provider_code == 'shkeeper'
+                       and shkeeper_tx.state in ('draft', 'pending')
+                       and shkeeper_tx.shkeeper_address"
+                 name="o_shkeeper_payment_instructions"
+                 class="card mb32"
+            >
+                <div class="card-body d-flex flex-column flex-md-row gap-4 align-items-center">
+                    <img class="border rounded flex-shrink-0"
+                         t-att-src="shkeeper_tx._shkeeper_get_qr_code_url()"
+                         width="240" height="240" alt="Payment QR code"/>
+                    <div class="flex-grow-1 text-break">
+                        <h5>
+                            Send exactly
+                            <strong t-out="shkeeper_tx.shkeeper_amount_crypto"/>
+                            <t t-out="shkeeper_tx.shkeeper_crypto_name"/>
+                        </h5>
+                        <p class="mb-1 text-muted">to this address:</p>
+                        <p><code class="fs-6 user-select-all" t-out="shkeeper_tx.shkeeper_address"/></p>
+                        <p class="small text-muted mb-1">
+                            Use this network only. The amount covers
+                            <t t-out="shkeeper_tx.amount"
+                               t-options="{'widget': 'monetary', 'display_currency': shkeeper_tx.currency_id}"/>
+                            at 1 <t t-out="shkeeper_tx.shkeeper_crypto"/> =
+                            <t t-out="shkeeper_tx.shkeeper_exchange_rate"/>
+                            <t t-out="shkeeper_tx.currency_id.name"/>.
+                            Network fees are paid by the sender.
+                        </p>
+                        <p t-if="shkeeper_tx.shkeeper_balance_crypto" class="small mb-1">
+                            Received so far:
+                            <t t-out="shkeeper_tx.shkeeper_balance_crypto"/>
+                            <t t-out="shkeeper_tx.shkeeper_crypto"/>
+                        </p>
+                        <p class="small text-muted mb-0">
+                            This page updates once the payment is confirmed on the blockchain,
+                            which can take from a few minutes to an hour. You will also receive an
+                            email.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
